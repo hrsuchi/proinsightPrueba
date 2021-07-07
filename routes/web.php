@@ -14,5 +14,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
+});
+
+Auth::routes();
+Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index']);
+
+//
+Route::group(['prefix'=>'admin', 'middleware' => 'auth'], function(){
+    Route::any('/a', function (){
+        return view('a', ["page" => "a"]);
+    });
+    Route::get('/{page}',  function($page){
+        return view('admin_index', ["page" => "admin_".$page]);
+    });
 });
